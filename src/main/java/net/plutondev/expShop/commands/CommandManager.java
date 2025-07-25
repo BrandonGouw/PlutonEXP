@@ -47,6 +47,12 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(strings.length == 0) {
+            CommandObject commandObj = getCommand("open");
+
+            if(!commandObj.hasPermission(commandSender)) {
+                plugin.messageManager.sendMessage((Player) commandSender, "no-permission");
+            }
+
             executeCommand(commandSender, "open", strings);
             return false;
         }

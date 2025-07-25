@@ -1,6 +1,6 @@
 # PlutonEXP - Experience Shop Plugin
 
-[![Version](https://img.shields.io/badge/version-1.12-blue.svg)](https://github.com/plutondev/expshop)
+[![Version](https://img.shields.io/badge/version-1.13-blue.svg)](https://github.com/plutondev/expshop)
 [![Minecraft](https://img.shields.io/badge/minecraft-1.20+-green.svg)](https://www.spigotmc.org/)
 [![Java](https://img.shields.io/badge/java-17+-orange.svg)](https://www.oracle.com/java/)
 
