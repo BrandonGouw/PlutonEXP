@@ -1,0 +1,219 @@
+settings:
+  title: "&a&lEXP SHOP"
+  size: 54
+  pages: 3
+
+#Available Items https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+
+# Common decorations for all pages
+decorations:
+  border:
+    display_item: BLACK_STAINED_GLASS_PANE
+    display_name: "&r"
+    slot: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 46, 47, 50, 51, 52]
+
+navigation:
+  previous_page:
+    display_item: ARROW
+    display_name: "&e&lPrevious Page"
+    nav_type: PREVIOUS
+    lore:
+      - "&7Click to go back"
+    slot: [45]
+
+  next_page:
+    display_item: ARROW
+    display_name: "&e&lNext Page"
+    nav_type: NEXT
+    lore:
+      - "&7Click to go forward"
+    slot: [53]
+
+  close:
+    display_item: BARRIER
+    display_name: "&c&lClose"
+    nav_type: CLOSE
+    lore:
+      - "&7Click to close shop"
+    slot: [49]
+
+  exp_info:
+    display_item: BOOK
+    display_name: "&e&lEXP Info"
+    nav_type: EXP
+    lore:
+      - "&7Current Level: &a%player_level%"
+      - "&7Current EXP: &a%player_exp%"
+    slot: [48]
+
+  reload:
+    display_item: NETHER_STAR
+    display_name: "&b&lReload Config"
+    nav_type: RELOAD
+    lore:
+      - "&7Click to reload the config"
+    slot: [50]
+
+
+# Items are organized by page
+pages:
+  1:  # WEAPONS & COMBAT
+    diamond_sword:
+      display_item: DIAMOND_SWORD
+      display_name: "&b&lDiamond Sword"
+      lore:
+        - "&7A powerful diamond sword"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [10]
+      exp_cost: 20
+      exp_type: LEVEL
+      commands:
+        - "give %player% diamond_sword{Enchantments:[{id:sharpness,lvl:5}]} 1"
+
+    bow:
+      display_item: BOW
+      display_name: "&d&lPower Bow"
+      lore:
+        - "&7A bow with Power V"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [12]
+      exp_cost: 22
+      exp_type: LEVEL
+      commands:
+        - "give %player% bow{Enchantments:[{id:power,lvl:5}]} 1"
+
+    trident:
+      display_item: TRIDENT
+      display_name: "&3&lLoyalty Trident"
+      lore:
+        - "&7Returns to you when thrown"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [14]
+      exp_cost: 30
+      exp_type: LEVEL
+      commands:
+        - "give %player% trident{Enchantments:[{id:loyalty,lvl:3}]} 1"
+
+    golden_apple:
+      display_item: GOLDEN_APPLE
+      display_name: "&6&lGolden Apples"
+      lore:
+        - "&7Restores health and gives"
+        - "&7absorption effect"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [16]
+      exp_cost: 500
+      exp_type: POINTS
+      amount: 16
+      commands:
+        - "give %player% golden_apple 16"
+
+  2:  # ARMOR
+    netherite_helmet:
+      display_item: NETHERITE_HELMET
+      display_name: "&8&lNetherite Helmet"
+      lore:
+        - "&7Protection IV, Unbreaking III"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [10]
+      exp_cost: 25
+      exp_type: LEVEL
+      commands:
+        - "give %player% netherite_helmet{Enchantments:[{id:protection,lvl:4}]} 1"
+
+    elytra:
+      display_item: ELYTRA
+      display_name: "&b&lElytra"
+      lore:
+        - "&7Fly like a bird!"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [12]
+      exp_cost: 45
+      exp_type: LEVEL
+      commands:
+        - "give %player% elytra{Enchantments:[{id:unbreaking,lvl:3}]} 1"
+
+    netherite_chestplate:
+      display_item: NETHERITE_CHESTPLATE
+      display_name: "&8&lNetherite Chestplate"
+      lore:
+        - "&7Protection IV, Unbreaking III"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [14]
+      exp_cost: 35
+      exp_type: LEVEL
+      commands:
+        - "give %player% netherite_chestplate{Enchantments:[{id:protection,lvl:4}]} 1"
+
+    netherite_boots:
+      display_item: NETHERITE_BOOTS
+      display_name: "&8&lNetherite Boots"
+      lore:
+        - "&7Protection IV, Depth Strider III"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [16]
+      exp_cost: 25
+      exp_type: LEVEL
+      commands:
+        - "give %player% netherite_boots{Enchantments:[{id:protection,lvl:4}]} 1"
+
+  3:  # SPECIAL ITEMS
+    beacon:
+      display_item: BEACON
+      display_name: "&f&lBeacon"
+      lore:
+        - "&7A powerful status effect generator"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [10]
+      exp_cost: 40
+      exp_type: LEVEL
+      commands:
+        - "give %player% beacon 1"
+
+    dragon_egg:
+      display_item: DRAGON_EGG
+      display_name: "&5&lDragon Egg"
+      lore:
+        - "&7The ultimate trophy"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [12]
+      exp_cost: 100
+      exp_type: LEVEL
+      commands:
+        - "give %player% dragon_egg 1"
+
+    enchanting_table:
+      display_item: ENCHANTING_TABLE
+      display_name: "&d&lEnchanting Table"
+      lore:
+        - "&7Unlock magical potential"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [14]
+      exp_cost: 40
+      exp_type: LEVEL
+      commands:
+        - "give %player% enchanting_table 1"
+
+    shulker_box:
+      display_item: PURPLE_SHULKER_BOX
+      display_name: "&5&lShulker Box"
+      lore:
+        - "&7Portable storage solution"
+        - ""
+        - "&eCost: &a%exp_cost% %exp_type%"
+      slot: [16]
+      exp_cost: 20
+      exp_type: LEVEL
+      commands:
+        - "give %player% purple_shulker_box 1"

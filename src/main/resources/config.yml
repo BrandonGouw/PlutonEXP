@@ -1,0 +1,82 @@
+# ============================================================
+# PlutonExperience Plugin Configuration                     ==
+# ============================================================
+# Author: BrandonGouw                                       ==
+# Version: 1.12                                            ==
+#                                                           ==
+# This file contains all the configurable settings for the  ==
+# Experience Shop plugin including sounds and messages.     ==
+# Please update the values below as required. Keep the keys ==
+# unchanged unless you understand the internal references.  ==
+#                                                           ==
+# Permissions:                                              ==
+# - `plutonexp.open` - Allows access to the experience shop.==
+# - `plutonexp.reload` - Allows reloading the configuration.==
+# - `plutonexp.help` - Allows access to the help command.   ==
+# ============================================================
+
+settings:
+  bstats-metrics:
+    enabled: true
+
+sounds: # Available sounds https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+  failure:
+    # Sound played on failure actions.
+    name: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+
+  success:
+    # Sound played on successful actions.
+    name: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  no-permission:
+    # Message when a user lacks the required permission.
+    message: "&cYou do not have permission to use this command."
+    sound: failure
+
+  invalid-page:
+    # Message for invalid page numbers.
+    message: "&cInvalid page number. Please enter a valid page number."
+    sound: failure
+
+  insufficient-exp:
+    # Message when the user doesn't have enough experience.
+    message: "&cYou do not have enough experience points."
+    sound: failure
+
+  item-purchased:
+    # Message shown when an item is successfully purchased.
+    message: "&aYou have purchased the item!"
+    sound: success
+
+  reload:
+    # Message on successful configuration reload.
+    message: "&aConfig reloaded successfully!"
+    sound: success
+
+  reload-fail:
+    # Message when configuration reload fails.
+    message: "&cFailed to reload config. Check console for errors."
+    sound: failure
+
+  expshop-no-permission:
+    # Alternate permission message for the shop commands.
+    message: "&cYou do not have permission to use this command."
+    sound: failure
+
+  expshop-open:
+    # Message shown when opening the experience shop.
+    message: "&aOpening the experience shop..."
+    sound: success
+
+  help:
+    # Help messages displayed to guide the user.
+    message:
+      - "&aUse /expshop to open the experience shop."
+      - "&aUse /expshop reload to reload the config."
+      - "&aUse /expshop help to see this message again."
+    sound: success
