@@ -7,17 +7,18 @@ public class ExperienceUtils {
 
     public void deductExperience(Player player, int expCost, ExpType expType) {
         if (expType == ExpType.LEVEL) {
-            // Calculate current total experience (before deduction)
+            // Calculate current level and progress fraction
             int currentLevel = player.getLevel();
             float currentFraction = player.getExp();
-            getTotalExperienceForLevel(currentLevel);
-            getExpToNextLevel(currentLevel);
 
-            // Calculate new total experience after deducting levels
+            // Calculate the target level after deducting levels
             int targetLevel = Math.max(0, currentLevel - expCost);
+
+            // Calculate total experience for the target level
             int targetTotalExp = getTotalExperienceForLevel(targetLevel);
 
-            if (targetLevel > 0 && currentLevel > 0 && currentFraction > 0) {
+            // Preserve the progress fraction within the new level
+            if (targetLevel > 0 && currentFraction > 0) {
                 targetTotalExp += Math.round(getExpToNextLevel(targetLevel) * currentFraction);
             }
 
@@ -27,7 +28,7 @@ public class ExperienceUtils {
             player.setExp(0);
             player.giveExp(targetTotalExp);
         } else if (expType == ExpType.POINTS) {
-            int currentTotalExp = player.getTotalExperience();
+            int currentTotalExp = getAccurateTotalExperience(player);
             int targetTotalExp = Math.max(0, currentTotalExp - expCost);
 
             player.setTotalExperience(0);
@@ -41,9 +42,15 @@ public class ExperienceUtils {
         if (expType == ExpType.LEVEL) {
             return player.getLevel() >= expCost;
         } else if (expType == ExpType.POINTS) {
-            return player.getTotalExperience() >= expCost;
+            return getAccurateTotalExperience(player) >= expCost;
         }
         return true;
+    }
+
+    public int getAccurateTotalExperience(Player player) {
+        int exp = getTotalExperienceForLevel(player.getLevel());
+        exp += Math.round(getExpToNextLevel(player.getLevel()) * player.getExp());
+        return exp;
     }
 
     public int getTotalExperienceForLevel(int level) {

@@ -42,6 +42,12 @@ public class MenuManager {
         loadMenu();
     }
 
+    public void refreshMenu(Player player, Inventory inventory, int menuPage) {
+         inventory.clear();
+
+        if (addItemsToMenu(player, menuPage, inventory)) return;
+    }
+
     public void createMenu(Player player, int menuPage) {
         if (menuPage > menuPageCount || menuPage <= 0) {
             plugin.messageManager.sendMessage(player, "invalid-page");
@@ -49,11 +55,18 @@ public class MenuManager {
         }
 
         Inventory inventory = player.getServer().createInventory(player, menuSize, menuName);
+        if (addItemsToMenu(player, menuPage, inventory)) return;
+
+        player.openInventory(inventory);
+        addInventory(menuPage, inventory);
+    }
+
+    private boolean addItemsToMenu(Player player, int menuPage, Inventory inventory) {
         MenuPage menuPageObject = findMenuPage(menuPage);
 
         if (menuPageObject == null) {
             plugin.messageManager.sendMessage(player, "invalid-page");
-            return;
+            return true;
         }
 
         for (MenuItem menuItem : menuPageObject.getItems()) {
@@ -62,8 +75,7 @@ public class MenuManager {
             addItemToSlots(menuItem, item, inventory);
         }
 
-        player.openInventory(inventory);
-        addInventory(menuPage, inventory);
+        return false;
     }
 
     private MenuPage findMenuPage(int pageNumber) {
@@ -81,21 +93,14 @@ public class MenuManager {
 
         List<String> lore = new ArrayList<>(menuItem.getLore());
 
-        if (menuItem.getNavType() == NavType.EXP) {
-            for (int i = 0; i < lore.size(); i++) {
+        for (int i = 0; i < lore.size(); i++) {
                 String loreLine = lore.get(i);
                 loreLine = loreLine.replace("%player_level%", String.valueOf(player.getLevel()));
-                loreLine = loreLine.replace("%player_exp%", String.valueOf(player.getTotalExperience()));
-                lore.set(i, loreLine);
-            }
-
-        } else if (menuItem.getType() == ItemType.ITEM) {
-            for (int i = 0; i < lore.size(); i++) {
-                String loreLine = lore.get(i);
+                loreLine = loreLine.replace("%player_exp%", String.valueOf(plugin.experienceUtils.getAccurateTotalExperience(player)));
                 loreLine = loreLine.replace("%exp_type%", menuItem.getExpType().toString());
                 loreLine = loreLine.replace("%exp_cost%", String.valueOf(menuItem.getExpCost()));
                 lore.set(i, loreLine);
-            }
+                lore.set(i, loreLine);
         }
 
         itemMeta.setLore(lore);
@@ -191,14 +196,14 @@ public class MenuManager {
         }
     }
 
-public int getCurrentPage(Inventory openInventory) {
-    Integer page = openInventories.get(openInventory);
-    if (page == null) {
-        plugin.getLogger().warning("Attempted to get page for an inventory that is not tracked: " + openInventory);
-        return -1; // Return an invalid page number to indicate not found
+    public int getCurrentPage(Inventory openInventory) {
+        Integer page = openInventories.get(openInventory);
+        if (page == null) {
+            plugin.getLogger().warning("Attempted to get page for an inventory that is not tracked: " + openInventory);
+            return -1; // Return an invalid page number to indicate not found
+        }
+        return page;
     }
-    return page;
-}
 
     public MenuItem createMenuItems(String location, ItemType itemType, NavType navType) {
         FileConfiguration config = menuConfig.getConfig();

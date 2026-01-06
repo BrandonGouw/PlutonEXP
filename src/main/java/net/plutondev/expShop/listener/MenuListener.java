@@ -105,8 +105,9 @@ public class MenuListener implements Listener {
         plugin.messageManager.sendMessage(player, "item-purchased");
 
         // Refresh the menu
-        menuManager.closeInventory(player, inventory);
-        menuManager.createMenu(player, currentPage);
+//        menuManager.closeInventory(player, inventory);
+//        menuManager.createMenu(player, currentPage);
+        menuManager.refreshMenu(player, inventory, currentPage);
     }
 
     /**

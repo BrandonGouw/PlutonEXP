@@ -4,7 +4,7 @@
   <groupId>net.plutondev</groupId>
   <artifactId>PlutonEXP</artifactId>
   <name>PlutonEXP</name>
-  <version>1.13</version>
+  <version>1.16</version>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>

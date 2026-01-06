@@ -1,5 +1,5 @@
 name: PlutonEXP
-version: '1.11'
+version: '1.16'
 main: net.plutondev.expShop.ExpShop
 api-version: '1.20'
 
