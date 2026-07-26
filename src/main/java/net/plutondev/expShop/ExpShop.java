@@ -32,7 +32,7 @@ public final class ExpShop extends JavaPlugin {
 
         Metrics metrics = null;
 
-        if(getConfig().getBoolean("settings.bstats-metrics.enable"))
+        if(getConfig().getBoolean("settings.bstats-metrics.enabled"))
             metrics = new Metrics(this, pluginID);
 
         // Config setup
