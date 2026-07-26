@@ -9,12 +9,15 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MessageManager {
     private final ExpShop plugin;
 
     private final Map<String, MessageObject> messagesMap = new HashMap<>();
     private final Map<String, SoundObject> soundObjects = new HashMap<>();
+    private final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     public MessageManager(ExpShop plugin) {
         this.plugin = plugin;
@@ -39,6 +42,11 @@ public class MessageManager {
 
     public void sendMessage(Player player, String message) {
         MessageObject messageObject = messagesMap.get(message);
+        if (messageObject == null) {
+            plugin.getLogger().warning("Message key '" + message + "' not found in messagesMap!");
+            player.sendMessage(ChatColor.RED + "Message '" + message + "' not found.");
+            return;
+        }
         for (String line : colorize(messageObject.getMessage())) player.sendMessage(line);
 
         playSound(player, messageObject.getSound().getSoundName());
@@ -127,6 +135,17 @@ public class MessageManager {
         List<String> coloredMessage = new ArrayList<>();
 
         for (String line : message) {
+            Matcher matcher = hexPattern.matcher(line);
+            StringBuffer buffer = new StringBuffer(line.length() + 4 * 8);
+            while (matcher.find()) {
+                String group = matcher.group(1);
+                matcher.appendReplacement(buffer, ChatColor.COLOR_CHAR + "x"
+                        + ChatColor.COLOR_CHAR + group.charAt(0) + ChatColor.COLOR_CHAR + group.charAt(1)
+                        + ChatColor.COLOR_CHAR + group.charAt(2) + ChatColor.COLOR_CHAR + group.charAt(3)
+                        + ChatColor.COLOR_CHAR + group.charAt(4) + ChatColor.COLOR_CHAR + group.charAt(5)
+                );
+            }
+            line = matcher.appendTail(buffer).toString();
             coloredMessage.add(ChatColor.translateAlternateColorCodes('&', line));
         }
 

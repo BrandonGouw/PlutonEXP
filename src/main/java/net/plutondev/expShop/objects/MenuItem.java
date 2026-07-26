@@ -73,7 +73,12 @@ public class MenuItem {
     }
 
     public ItemStack getItem(ExpShop plugin) {
-        ItemStack item = new ItemStack(Objects.requireNonNull(Material.matchMaterial(itemMaterial)), 1);
+        Material material = Material.matchMaterial(itemMaterial);
+        if (material == null) {
+            plugin.getLogger().warning("Invalid material '" + itemMaterial + "' for item '" + itemName + "'. Falling back to STONE.");
+            material = Material.STONE;
+        }
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta itemMeta = item.getItemMeta();
 
         if (itemMeta == null) return item;

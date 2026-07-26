@@ -23,6 +23,7 @@ public class ReloadCommand extends CommandObject {
                 plugin.menuConfig.reloadConfig();
 
                 plugin.menuManager.updateMenu();
+                plugin.messageManager.loadSounds();
                 plugin.messageManager.messagesList();
                 plugin.messageManager.sendMessage(player, "reload");
             } catch (Exception e) {

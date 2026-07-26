@@ -1,16 +1,20 @@
 package net.plutondev.expShop.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.plutondev.expShop.ExpShop;
 import net.plutondev.expShop.objects.CommandObject;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class CommandManager implements CommandExecutor {
+public class CommandManager implements CommandExecutor, TabCompleter {
     private final Map<String, CommandObject> commandMap = new HashMap<>();
     private final ExpShop plugin;
 
@@ -50,25 +54,61 @@ public class CommandManager implements CommandExecutor {
             CommandObject commandObj = getCommand("open");
 
             if(!commandObj.hasPermission(commandSender)) {
-                plugin.messageManager.sendMessage((Player) commandSender, "no-permission");
+                if (commandSender instanceof Player player) {
+                    plugin.messageManager.sendMessage(player, "no-permission");
+                } else {
+                    commandSender.sendMessage("You do not have permission to do this.");
+                }
+                return true;
             }
 
             executeCommand(commandSender, "open", strings);
-            return false;
+            return true;
         }
 
         String commandName = strings[0].toLowerCase();
         CommandObject commandObj = getCommand(commandName);
         if(commandObj == null) {
             executeCommand(commandSender, "help", strings);
-            return false;
+            return true;
         }
 
         if(!commandObj.hasPermission(commandSender)) {
-            plugin.messageManager.sendMessage((Player) commandSender, "no-permission");
+            if (commandSender instanceof Player player) {
+                plugin.messageManager.sendMessage(player, "no-permission");
+            } else {
+                commandSender.sendMessage("You do not have permission to do this.");
+            }
+            return true;
         }
 
         executeCommand(commandSender, commandObj.getName(), strings);
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            List<String> subCommands = new ArrayList<>();
+            subCommands.add("open");
+            subCommands.add("reload");
+            subCommands.add("help");
+            
+            String partial = args[0].toLowerCase();
+            for (String sub : subCommands) {
+                if (sub.startsWith(partial)) {
+                    completions.add(sub);
+                }
+            }
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("open")) {
+            String partial = args[1].toLowerCase();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.getName().toLowerCase().startsWith(partial)) {
+                    completions.add(p.getName());
+                }
+            }
+        }
+        return completions;
     }
 }

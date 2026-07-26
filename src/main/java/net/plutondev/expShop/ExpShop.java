@@ -90,6 +90,9 @@ public final class ExpShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (menuManager != null) {
+            menuManager.closeAllMenus();
+        }
         getLogger().info("PlutonEXP has been disabled!");
     }
 }
