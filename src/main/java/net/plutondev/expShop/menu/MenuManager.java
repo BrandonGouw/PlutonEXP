@@ -40,6 +40,7 @@ public class MenuManager {
         menuItemsMap.clear();
 
         loadMenu();
+        refreshOpenMenus();
     }
 
     public void refreshMenu(Player player, Inventory inventory, int menuPage) {
@@ -128,7 +129,33 @@ public class MenuManager {
 
     public void addItemToSlots(MenuItem menuItem, ItemStack itemStack, Inventory inventory) {
         List<Integer> slots = menuItem.getSlots();
-        slots.forEach(slot -> inventory.setItem(slot, itemStack));
+        slots.forEach(slot -> {
+            if (slot >= 0 && slot < menuSize) {
+                inventory.setItem(slot, itemStack);
+            }
+        });
+    }
+
+    public void closeAllMenus() {
+        for (Inventory inv : getOpenInventories()) {
+            for (org.bukkit.entity.HumanEntity viewer : new java.util.ArrayList<>(inv.getViewers())) {
+                viewer.closeInventory();
+            }
+        }
+        openInventories.clear();
+    }
+
+    public void refreshOpenMenus() {
+        for (Inventory inv : getOpenInventories()) {
+            Integer page = openInventories.get(inv);
+            if (page != null) {
+                for (org.bukkit.entity.HumanEntity viewer : new java.util.ArrayList<>(inv.getViewers())) {
+                    if (viewer instanceof Player) {
+                        refreshMenu((Player) viewer, inv, page);
+                    }
+                }
+            }
+        }
     }
 
     public List<MenuItem> getMenuItems() {
@@ -139,6 +166,10 @@ public class MenuManager {
         FileConfiguration config = menuConfig.getConfig();
         this.menuName = config.getString("settings.name", "Shop Menu");
         this.menuSize = config.getInt("settings.size", 54);
+        if (this.menuSize < 9 || this.menuSize > 54 || this.menuSize % 9 != 0) {
+            plugin.getLogger().warning("Invalid menu size in config. Must be between 9 and 54, and a multiple of 9. Falling back to 54.");
+            this.menuSize = 54;
+        }
         this.menuPageCount = config.getInt("settings.pages", 1);
 
         // Load items by type

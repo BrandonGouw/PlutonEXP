@@ -45,13 +45,25 @@ public class MenuListener implements Listener {
      */
     @EventHandler
     public void onMenuClick(InventoryClickEvent event) {
-        if (!menuManager.getOpenInventories().contains(event.getClickedInventory())) return;
+        if (event.getClickedInventory() == null || event.getView().getTopInventory() == null) return;
 
-        ItemStack currentItem = event.getCurrentItem();
-        if (currentItem != null) {
-            itemClickHandler((Player) event.getWhoClicked(), currentItem, event.getClickedInventory());
+        if (menuManager.getOpenInventories().contains(event.getView().getTopInventory())) {
+            event.setCancelled(true);
+            
+            if (event.getClickedInventory().equals(event.getView().getTopInventory())) {
+                ItemStack currentItem = event.getCurrentItem();
+                if (currentItem != null) {
+                    itemClickHandler((Player) event.getWhoClicked(), currentItem, event.getClickedInventory());
+                }
+            }
         }
-        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMenuDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTopInventory() != null && menuManager.getOpenInventories().contains(event.getView().getTopInventory())) {
+            event.setCancelled(true);
+        }
     }
 
     /**

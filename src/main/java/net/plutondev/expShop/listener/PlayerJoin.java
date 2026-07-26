@@ -17,7 +17,9 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void playerJoinEvent(PlayerJoinEvent event) {
         if(event.getPlayer().isOp()) {
-            plugin.checkUpdates(event.getPlayer());
+            org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                plugin.checkUpdates(event.getPlayer());
+            });
         }
     }
 

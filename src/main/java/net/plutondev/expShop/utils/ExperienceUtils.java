@@ -6,6 +6,7 @@ import net.plutondev.expShop.enums.ExpType;
 public class ExperienceUtils {
 
     public void deductExperience(Player player, int expCost, ExpType expType) {
+        if (expCost <= 0) return;
         if (expType == ExpType.LEVEL) {
             // Calculate current level and progress fraction
             int currentLevel = player.getLevel();
@@ -18,7 +19,7 @@ public class ExperienceUtils {
             int targetTotalExp = getTotalExperienceForLevel(targetLevel);
 
             // Preserve the progress fraction within the new level
-            if (targetLevel > 0 && currentFraction > 0) {
+            if (targetLevel >= 0 && currentFraction > 0) {
                 targetTotalExp += Math.round(getExpToNextLevel(targetLevel) * currentFraction);
             }
 
@@ -39,6 +40,7 @@ public class ExperienceUtils {
     }
 
     public boolean hasEnoughExp(Player player, int expCost, ExpType expType) {
+        if (expCost <= 0) return false;
         if (expType == ExpType.LEVEL) {
             return player.getLevel() >= expCost;
         } else if (expType == ExpType.POINTS) {
